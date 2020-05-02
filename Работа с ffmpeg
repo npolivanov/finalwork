@@ -1,0 +1,15 @@
+// сжимаем все файлы до 10 секунд
+for file in Видео/*.mp4; do ffmpeg -ss 0 -t 10 -i $file -vcodec copy -acodec copy $file.ts; done
+
+// создаём переменную и записываем все названия коротких видео
+text=`for file in Видео/*.ts; do echo "$file|"; done`
+
+// Удаляем все пробелы у этого текста 
+text=`echo $text | sed s/' '//g`
+
+// Соедениям все видео в одно видео 
+ffmpeg -i "concat:$text" -vcodec copy -acodec copy "Видео/video.mp4"
+
+// Добавляем аудиодорожку к видео
+ffmpeg -i Видео/outpud.mp4 -i Видео/"Король и Шут - Утренний рассвет".mp3 -c copy -map 0:v:0 -map 1:a:0 Видео/output1.mp4
+
