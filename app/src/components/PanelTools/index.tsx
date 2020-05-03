@@ -13,8 +13,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import BrushOutlinedIcon from "@material-ui/icons/BrushOutlined";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
 
 const Wrapper = styled.div`
   width: 5%;
@@ -41,7 +42,14 @@ function returnTool(props: any) {
       );
     case "delete":
       return (
-        <DeleteIcon
+        <EditIcon
+          fontSize="small"
+          style={{ color: props.selected ? "black" : "grey" }}
+        />
+      );
+    case "text":
+      return (
+        <TextFieldsIcon
           fontSize="small"
           style={{ color: props.selected ? "black" : "grey" }}
         />
