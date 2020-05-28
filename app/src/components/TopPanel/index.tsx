@@ -9,6 +9,9 @@ import FormatAlignCenterIcon from "@material-ui/icons/FormatAlignCenter";
 import FormatBoldIcon from "@material-ui/icons/FormatBold";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import FormatItalicIcon from "@material-ui/icons/FormatItalic";
+import ChangeHistoryIcon from "@material-ui/icons/ChangeHistory";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 
 import {
   TextField,
@@ -26,6 +29,7 @@ interface IFont {
 
 interface IProps {
   color: string;
+  backgroundColor: string;
   lineWidth: number;
   currentTool: string;
   arrayFontSize: Array<IFont>;
@@ -34,13 +38,17 @@ interface IProps {
   currentAlign: string;
   valueText: string;
   arrayFontStyle: Array<string>;
+  arrayFiguresDraw: Array<string>;
   fontStyle: string;
+  selectedFigure: string;
   setColor(color: any): void;
   setWidth(width: number): void;
   setCurrentSize(payload: any): void;
   setAlign(payload: string): void;
   setValueText(payload: string): void;
   setStyle(payload: string): void;
+  setSelectedFigure(payload: string): void;
+  setBackgroundColor(payload: string): void;
 }
 
 interface IColorDispalay {
@@ -61,10 +69,21 @@ const ColorPickerOverlay = styled.div`
   position: relative;
 `;
 
+const ColorPickerOverlayBG = styled.div`
+  margin-left: 120px;
+  position: relative;
+`;
 const ColorPicker = styled.div`
   position: absolute;
   z-index: 9999;
   top: 0px;
+`;
+
+const ColorPickerBG = styled.div`
+  position: absolute;
+  z-index: 9999;
+  top: 0px;
+  left: 100px;
 `;
 
 const ColorDisplay = styled.div`
@@ -86,12 +105,17 @@ const TextGroup = styled.div`
 
 const TopPanel = (props: IProps) => {
   const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false);
+  const [displayColorPickerBG, setDisplayColorPickerBG] = useState<boolean>(
+    false,
+  );
 
   return (
     <Wrapper>
-      <Button onClick={() => setDisplayColorPicker(!displayColorPicker)}>
-        Color <ColorDisplay color={props.color}></ColorDisplay>
-      </Button>
+      <ButtonGroup>
+        <Button onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+          Color <ColorDisplay color={props.color}></ColorDisplay>
+        </Button>
+      </ButtonGroup>
       {displayColorPicker && (
         <ColorPickerOverlay>
           <ColorPicker>
@@ -105,6 +129,7 @@ const TopPanel = (props: IProps) => {
           </ColorPicker>
         </ColorPickerOverlay>
       )}
+
       <TextFieldGroup>
         <TextField
           label={props.currentTool === "text" ? "FZ" : "WL"}
@@ -190,7 +215,7 @@ const TopPanel = (props: IProps) => {
             </FormControl>
             <FormControl style={{ marginLeft: "20px" }}>
               <ButtonGroup size="small">
-                {props.arrayFontStyle.map((item) => {
+                {props.arrayFontStyle.map((item, i) => {
                   switch (item) {
                     case "normal":
                       return (
@@ -199,6 +224,7 @@ const TopPanel = (props: IProps) => {
                             background:
                               props.fontStyle === item ? "#ccc" : "none",
                           }}
+                          key={i}
                           onClick={() => props.setStyle(item)}
                         >
                           <IndeterminateCheckBoxIcon />
@@ -211,6 +237,7 @@ const TopPanel = (props: IProps) => {
                             background:
                               props.fontStyle === item ? "#ccc" : "none",
                           }}
+                          key={i}
                           onClick={() => props.setStyle(item)}
                         >
                           <FormatBoldIcon />
@@ -223,9 +250,87 @@ const TopPanel = (props: IProps) => {
                             background:
                               props.fontStyle === item ? "#ccc" : "none",
                           }}
+                          key={i}
                           onClick={() => props.setStyle(item)}
                         >
                           <FormatItalicIcon />
+                        </Button>
+                      );
+                  }
+                })}
+              </ButtonGroup>
+            </FormControl>
+          </TextGroup>
+        )}
+        {props.currentTool === "figure" && (
+          <TextGroup>
+            <ButtonGroup>
+              <Button
+                style={{ marginLeft: "20px" }}
+                onClick={() => setDisplayColorPickerBG(!displayColorPickerBG)}
+              >
+                BGColor{" "}
+                <ColorDisplay color={props.backgroundColor}></ColorDisplay>
+              </Button>
+
+              {displayColorPickerBG && (
+                <ColorPickerOverlay>
+                  <ColorPicker>
+                    <ChromePicker
+                      color={props.backgroundColor}
+                      onChange={(ev: any) => {
+                        const { r, g, b, a } = ev.rgb;
+                        props.setBackgroundColor(
+                          `rgba(${r}, ${g}, ${b}, ${a})`,
+                        );
+                      }}
+                    />
+                  </ColorPicker>
+                </ColorPickerOverlay>
+              )}
+            </ButtonGroup>
+
+            <FormControl style={{ marginLeft: "20px" }}>
+              <ButtonGroup size="small">
+                {props.arrayFiguresDraw.map((item, i) => {
+                  switch (item) {
+                    case "triangle":
+                      return (
+                        <Button
+                          style={{
+                            background:
+                              props.selectedFigure === item ? "#ccc" : "none",
+                          }}
+                          key={i}
+                          onClick={() => props.setSelectedFigure(item)}
+                        >
+                          <ChangeHistoryIcon />
+                        </Button>
+                      );
+                    case "square":
+                      return (
+                        <Button
+                          style={{
+                            background:
+                              props.selectedFigure === item ? "#ccc" : "none",
+                          }}
+                          key={i}
+                          onClick={() => props.setSelectedFigure(item)}
+                        >
+                          <CheckBoxOutlineBlankIcon />
+                        </Button>
+                      );
+                    case "circle":
+                      return (
+                        <Button
+                          style={{
+                            background:
+                              props.selectedFigure === item ? "#ccc" : "none",
+                          }}
+                          key={i}
+                          onClick={() => props.setSelectedFigure(item)}
+                        >
+                          <RadioButtonUncheckedIcon />
                         </Button>
                       );
                   }
@@ -242,6 +347,7 @@ const TopPanel = (props: IProps) => {
 const mapStateToProps = (state: any) => {
   return {
     color: state.panelTools.color,
+    backgroundColor: state.panelTools.backgroundColor,
     lineWidth: state.panelTools.lineWidth,
     currentTool: state.panelTools.currentTool,
     currentFontSize: state.panelTools.currentFontSize,
@@ -250,6 +356,8 @@ const mapStateToProps = (state: any) => {
     currentAlign: state.panelTools.currentAlign,
     valueText: state.panelTools.valueText,
     arrayFontStyle: state.panelTools.arrayFontStyle,
+    arrayFiguresDraw: state.panelTools.arrayFiguresDraw,
+    selectedFigure: state.panelTools.selectedFigure,
     fontStyle: state.panelTools.fontStyle,
   };
 };
@@ -261,6 +369,8 @@ const action = {
   setAlign: appActions.setAlign,
   setStyle: appActions.setStyle,
   setValueText: appActions.setValueText,
+  setBackgroundColor: appActions.setBackgroundColor,
+  setSelectedFigure: appActions.setSelectedFigure,
 };
 
 export default connect(mapStateToProps, action)(TopPanel);

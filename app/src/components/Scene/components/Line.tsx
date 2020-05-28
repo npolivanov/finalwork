@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Text, Transformer } from "react-konva";
+import { Line, Transformer } from "react-konva";
 
 interface IProps {
   x: number;
   y: number;
-  text: string;
   edit: boolean;
   color: string;
   fontSize: number;
   fontStyle: string;
   fontFamily: string;
   align: string;
+  points: Array<number>;
   setDrawScene(): void;
 }
 
@@ -41,16 +41,17 @@ export default (props: IProps) => {
 
   return (
     <React.Fragment>
-      <Text
+      <Line
         x={props.x}
         y={props.y}
         align={props.align}
         fill={props.color}
         ref={textRef}
+        closed
         fontFamily={props.fontFamily}
         fontSize={props.fontSize}
         fontStyle={props.fontStyle}
-        text={props.text}
+        points={props.points}
         draggable={true}
         onClick={() => selectText()}
       />

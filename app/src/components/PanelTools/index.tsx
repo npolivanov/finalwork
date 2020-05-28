@@ -2,23 +2,14 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { appActions } from "reducers/panelTools";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import BrushOutlinedIcon from "@material-ui/icons/BrushOutlined";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
+import PermDataSettingIcon from "@material-ui/icons/PermDataSetting";
 
 const Wrapper = styled.div`
-  width: 5%;
+  width: 3%;
   height: 80vh;
   position: fixed;
   z-index: 999;
@@ -50,6 +41,13 @@ function returnTool(props: any) {
     case "text":
       return (
         <TextFieldsIcon
+          fontSize="small"
+          style={{ color: props.selected ? "black" : "grey" }}
+        />
+      );
+    case "figure":
+      return (
+        <PermDataSettingIcon
           fontSize="small"
           style={{ color: props.selected ? "black" : "grey" }}
         />

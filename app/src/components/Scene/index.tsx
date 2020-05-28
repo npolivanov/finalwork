@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Stage, Layer, Rect, Line, Transformer } from "react-konva";
 import Konva from "konva";
 import TextComponents from "./components/Text";
+import LineComponents from "./components/Line";
 
 interface IFont {
   id: number;
@@ -25,6 +26,7 @@ interface IProps {
   drawLine(array: number[]): void;
   setEraser(): void;
   setText(obj: any): void;
+  setFigureDraw(obj: any): void;
   figures: Array<any>;
   arrayFontSize: Array<IFont>;
   currentFontSize: number;
@@ -51,7 +53,6 @@ function Scene(props: IProps) {
 
   const draw = (e: any) => {
     const canvas: any = document.getElementById("mainCanvas");
-
     switch (props.currentTool) {
       case "brush":
         props.setLine();
@@ -59,6 +60,7 @@ function Scene(props: IProps) {
           props.drawLine([e.offsetX, e.offsetY]);
         };
         break;
+
       case "delete":
         props.setEraser();
         canvas.onmousemove = (e: any) => {
@@ -76,6 +78,9 @@ function Scene(props: IProps) {
     switch (props.currentTool) {
       case "text":
         props.setText({ x: e.evt.offsetX, y: e.evt.offsetY });
+        break;
+      case "figure":
+        props.setFigureDraw({ x: e.evt.offsetX, y: e.evt.offsetY });
         break;
     }
   };
@@ -125,6 +130,20 @@ function Scene(props: IProps) {
                         strokeWidth={item.lineWidth}
                       />
                     );
+                  case "TRIANGLE":
+                    return (
+                      <LineComponents
+                        key={i}
+                        x={item.x}
+                        y={item.y}
+                        edit={drawScene}
+                        points={[0, 0, 100, 0, 100, 100]}
+                        backgroundColor={item.backgroundColor}
+                        stroke={item.color}
+                        strokeWidth={item.lineWidth}
+                        setDrawScene={() => setDrawScene(false)}
+                      />
+                    );
                   case "TEXT":
                     return (
                       <TextComponents
@@ -141,6 +160,7 @@ function Scene(props: IProps) {
                         setDrawScene={() => setDrawScene(false)}
                       />
                     );
+
                   default:
                     return (
                       <Line
@@ -181,6 +201,7 @@ const action = {
   drawLine: actionPanel.drawLine,
   setEraser: actionPanel.setEraser,
   setText: actionPanel.setText,
+  setFigureDraw: actionPanel.setFigureDraw,
 };
 
 export default connect(mapStateToProps, action)(Scene);

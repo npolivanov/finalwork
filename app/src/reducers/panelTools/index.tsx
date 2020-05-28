@@ -14,6 +14,9 @@ export const actionTypes = {
   SET_ALIGN: "SET_ALIGN",
   SET_STYLE: "SET_STYLE",
   SET_VALUE_TEXT: "SET_VALUE_TEXT",
+  SET_BACKGROUND_COLOR: "SET_BACKGROUND_COLOR",
+  SET_SELECTED_FIGURE: "SET_SELECTED_FIGURE",
+  SET_FIGURE_DRAW: "SET_FIGURE_DRAW",
 };
 
 export const appActions = {
@@ -23,6 +26,10 @@ export const appActions = {
   }),
   setColor: (color: string) => ({
     type: actionTypes.SET_COLOR,
+    payload: color,
+  }),
+  setBackgroundColor: (color: string) => ({
+    type: actionTypes.SET_BACKGROUND_COLOR,
     payload: color,
   }),
   setWidth: (width: number) => ({
@@ -64,17 +71,26 @@ export const appActions = {
     type: actionTypes.SET_VALUE_TEXT,
     payload: payload,
   }),
+  setSelectedFigure: (payload: string) => ({
+    type: actionTypes.SET_SELECTED_FIGURE,
+    payload: payload,
+  }),
+  setFigureDraw: (payload: any) => ({
+    type: actionTypes.SET_FIGURE_DRAW,
+    payload: payload,
+  }),
 };
 
 const initialState = {
   color: "rgba(0, 0, 0, 1)",
+  backgroundColor: "rgba(0, 0, 0, 1)",
   lineWidth: 3,
   fontFamily: "calibri",
   fontSize: 15,
   valueText: "New text",
   currentAlign: "left",
-  figures: [] as any,
   currentTool: "brush",
+  figures: [] as any,
   tools: [
     {
       size: 3,
@@ -89,7 +105,13 @@ const initialState = {
       selected: false,
       type: "text",
     },
+    {
+      selected: false,
+      type: "figure",
+    },
   ],
+  selectedFigure: "triangle",
+  arrayFiguresDraw: ["triangle", "square", "circle"],
   currentFontSize: 1,
   arrayFontSize: [
     { font: "Times New Roman", id: 0 },
@@ -115,6 +137,8 @@ function panelTools(state = initialState, { type, payload }: any) {
             (document as any).body.style.cursor = `url(${EraserCursor}) 4 12, auto`;
           } else if (payload === "text" && !item.selected === true) {
             (document as any).body.style.cursor = `text`;
+          } else if (payload === "figure" && !item.selected === true) {
+            (document as any).body.style.cursor = `auto`;
           } else {
             newStateTools.currentTool = "";
             (document as any).body.style.cursor = `auto`;
@@ -126,10 +150,31 @@ function panelTools(state = initialState, { type, payload }: any) {
         return item;
       });
       return { ...newStateTools };
+    case actionTypes.SET_FIGURE_DRAW:
+      let figuresDrawTriangle = [...state.figures];
+      if (state.selectedFigure === "triangle") {
+        figuresDrawTriangle.push({
+          type: "TRIANGLE",
+          color: state.color,
+          backgroundColor: state.backgroundColor,
+          lineWidth: state.lineWidth,
+          array: [],
+          x: payload.x,
+          y: payload.y,
+        });
+      }
+      return { ...state, figures: [...figuresDrawTriangle] };
+    case actionTypes.SET_SELECTED_FIGURE:
+      return { ...state, selectedFigure: payload };
     case actionTypes.SET_COLOR:
       return {
         ...state,
         color: payload,
+      };
+    case actionTypes.SET_BACKGROUND_COLOR:
+      return {
+        ...state,
+        backgroundColor: payload,
       };
     case actionTypes.SET_WIDTH:
       return { ...state, lineWidth: payload };
@@ -178,6 +223,7 @@ function panelTools(state = initialState, { type, payload }: any) {
       return { ...state, valueText: payload };
     case actionTypes.SET_STYLE:
       return { ...state, fontStyle: payload };
+
     default:
       return state;
   }
