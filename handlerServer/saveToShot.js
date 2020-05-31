@@ -27,7 +27,7 @@ class ImageHandler {
   }
 
   createVideo() {
-    const args = ["-y", "-i", "short/%d.png", "short/output.mp4"];
+    const args = ["-y", "-i", "./short/%d.png", "./short/output.mp4"];
     const ffmpeg = spawn("ffmpeg", args);
 
     ffmpeg.stdout.on("data", (data) => {

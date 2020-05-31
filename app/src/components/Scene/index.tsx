@@ -130,20 +130,20 @@ function Scene(props: IProps) {
                         strokeWidth={item.lineWidth}
                       />
                     );
-                  case "TRIANGLE":
-                    return (
-                      <LineComponents
-                        key={i}
-                        x={item.x}
-                        y={item.y}
-                        edit={drawScene}
-                        points={[0, 0, 100, 0, 100, 100]}
-                        backgroundColor={item.backgroundColor}
-                        stroke={item.color}
-                        strokeWidth={item.lineWidth}
-                        setDrawScene={() => setDrawScene(false)}
-                      />
-                    );
+                  // case "TRIANGLE":
+                  //   return (
+                  //     <LineComponents
+                  //       key={i}
+                  //       x={item.x}
+                  //       y={item.y}
+                  //       edit={drawScene}
+                  //       points={[0, 0, 100, 0, 100, 100]}
+                  //       backgroundColor={item.backgroundColor}
+                  //       stroke={item.color}
+                  //       strokeWidth={item.lineWidth}
+                  //       setDrawScene={() => setDrawScene(false)}
+                  //     />
+                  //   );
                   case "TEXT":
                     return (
                       <TextComponents

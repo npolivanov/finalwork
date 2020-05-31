@@ -6,10 +6,7 @@ interface IProps {
   y: number;
   edit: boolean;
   color: string;
-  fontSize: number;
-  fontStyle: string;
-  fontFamily: string;
-  align: string;
+  backgroundColor:string;
   points: Array<number>;
   setDrawScene(): void;
 }
@@ -44,13 +41,9 @@ export default (props: IProps) => {
       <Line
         x={props.x}
         y={props.y}
-        align={props.align}
-        fill={props.color}
+        fill={props.backgroundColor}
         ref={textRef}
         closed
-        fontFamily={props.fontFamily}
-        fontSize={props.fontSize}
-        fontStyle={props.fontStyle}
         points={props.points}
         draggable={true}
         onClick={() => selectText()}
