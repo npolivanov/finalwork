@@ -21,7 +21,7 @@ function startServer() {
     next();
   });
 
-  app.listen(port, (err) => {
+  app.listen(port, err => {
     if (err) {
       return console.log("something bad happened", err);
     }
@@ -34,6 +34,11 @@ function startServer() {
 
   app.post("/short", (request, response) => {
     handlerImage.saveToShot(request.body.data);
+    response.send();
+  });
+
+  app.get("/delete", (request, response) => {
+    handlerImage.delete();
     response.send();
   });
 

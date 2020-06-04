@@ -31,7 +31,7 @@ const initialState = {
   shots: localStorage.getItem("shots")
     ? JSON.parse(localStorage.getItem("shots") || "[]")
     : [],
-  server: "",
+  server: localStorage.getItem("server") ? localStorage.getItem("server") : "",
 };
 
 function TimeLine(state = initialState, { type, payload }: any) {
@@ -43,6 +43,7 @@ function TimeLine(state = initialState, { type, payload }: any) {
     case actionTypes.CREATE_VIDEO:
       return { ...state };
     case actionTypes.SET_SERVER:
+      localStorage.setItem("server", payload);
       return { ...state, server: payload };
     case actionTypes.SET_SHOTS_SCREENSHOT:
       localStorage.setItem("shots", JSON.stringify([...state.shots, payload]));

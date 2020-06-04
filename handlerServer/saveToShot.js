@@ -2,6 +2,21 @@ const sharp = require("sharp");
 const fs = require("fs");
 const { spawn } = require("child_process");
 
+var deleteFolderRecursive = function (path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function (file, index) {
+      var curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+};
 /* Обрабатывает буферы фотографий  */
 class ImageHandler {
   constructor() {
@@ -18,23 +33,33 @@ class ImageHandler {
     sharp(photoBuffer)
       .png()
       .toFile(`short/${this.imageArray.length}.png`)
-      .then((info) => {
+      .then(info => {
         console.log(info);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
+  }
+
+  delete() {
+    if (fs.existsSync("./short")) {
+      deleteFolderRecursive("./short");
+    }
+    if (!fs.existsSync("./short")) {
+      fs.mkdirSync("./short");
+    }
+    this.imageArray = [];
   }
 
   createVideo() {
     const args = ["-y", "-i", "./short/%d.png", "./short/output.mp4"];
     const ffmpeg = spawn("ffmpeg", args);
 
-    ffmpeg.stdout.on("data", (data) => {
+    ffmpeg.stdout.on("data", data => {
       console.log(`stdout: ${data}`);
     });
 
-    ffmpeg.stderr.on("data", (data) => {
+    ffmpeg.stderr.on("data", data => {
       console.error(`stderr: ${data}`);
     });
   }
