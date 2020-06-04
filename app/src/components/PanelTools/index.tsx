@@ -7,19 +7,21 @@ import EditIcon from "@material-ui/icons/Edit";
 import BrushOutlinedIcon from "@material-ui/icons/BrushOutlined";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import PermDataSettingIcon from "@material-ui/icons/PermDataSetting";
+import FormatColorFillIcon from "@material-ui/icons/FormatColorFill";
 
 const Wrapper = styled.div`
-  width: 3%;
-  height: 80vh;
+  width: 5%;
+  height: 70vh;
   position: fixed;
   z-index: 999;
-  background: #dddddd;
+  background-color: #262c34;
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 function returnTool(props: any) {
@@ -28,28 +30,35 @@ function returnTool(props: any) {
       return (
         <BrushOutlinedIcon
           fontSize="small"
-          style={{ color: props.selected ? "black" : "grey" }}
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
         />
       );
     case "delete":
       return (
         <EditIcon
           fontSize="small"
-          style={{ color: props.selected ? "black" : "grey" }}
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
         />
       );
     case "text":
       return (
         <TextFieldsIcon
           fontSize="small"
-          style={{ color: props.selected ? "black" : "grey" }}
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
         />
       );
     case "figure":
       return (
         <PermDataSettingIcon
           fontSize="small"
-          style={{ color: props.selected ? "black" : "grey" }}
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
+        />
+      );
+    case "fill":
+      return (
+        <FormatColorFillIcon
+          fontSize="small"
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
         />
       );
   }

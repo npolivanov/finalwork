@@ -60,7 +60,7 @@ const Wrapper = styled.div`
   padding: 10px;
   box-sizing: border-box;
   display: flex;
-  background-color: #dddddd;
+  background-color: #262c34;
   z-index: 9999;
   position: relative;
 `;
@@ -75,6 +75,7 @@ const ColorPickerOverlayBG = styled.div`
 `;
 const ColorPicker = styled.div`
   position: absolute;
+  color: white;
   z-index: 9999;
   top: 0px;
 `;
@@ -96,11 +97,19 @@ const ColorDisplay = styled.div`
 const TextFieldGroup = styled.div`
   display: flex;
   margin-left: 60px;
+  background-color: #ddd;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
 `;
 
 const TextGroup = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const ButtonStyled = styled(Button)`
+  color: white;
 `;
 
 const TopPanel = (props: IProps) => {
@@ -112,7 +121,11 @@ const TopPanel = (props: IProps) => {
   return (
     <Wrapper>
       <ButtonGroup>
-        <Button onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setDisplayColorPicker(!displayColorPicker)}
+        >
           Color <ColorDisplay color={props.color}></ColorDisplay>
         </Button>
       </ButtonGroup>
@@ -171,7 +184,7 @@ const TopPanel = (props: IProps) => {
             </FormControl>
             <FormControl style={{ marginLeft: "20px" }}>
               <ButtonGroup size="small">
-                {props.arrayAlign.map((item) => {
+                {props.arrayAlign.map(item => {
                   switch (item) {
                     case "left":
                       return (

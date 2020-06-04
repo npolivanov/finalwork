@@ -35,7 +35,7 @@ interface IProps {
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;

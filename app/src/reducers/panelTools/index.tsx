@@ -109,6 +109,10 @@ const initialState = {
       selected: false,
       type: "figure",
     },
+    {
+      selected: false,
+      type: "fill",
+    },
   ],
   selectedFigure: "triangle",
   arrayFiguresDraw: ["triangle", "square", "circle"],

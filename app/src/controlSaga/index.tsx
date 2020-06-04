@@ -6,17 +6,20 @@ export function* setDraw(payload: boolean) {
 }
 
 export function* setScreenShot() {
+  const timeLine = yield select(store => store.timeLine);
+
   const wrapper: HTMLHeadingElement | null = document.querySelector(
     "#mainCanvas",
   );
   if (wrapper !== null) {
     const canvas: any = wrapper.querySelector("canvas");
     if (canvas !== null) {
-      request("http://localhost:5000/short", canvas.toDataURL());
-      console.log(canvas.toDataURL());
+      yield put({ type: "SET_SHOTS_SCREENSHOT", payload: canvas.toDataURL() });
+      request(`${timeLine.server}/short`, canvas.toDataURL());
     }
   }
 }
 export function* createVideo() {
-  requestGet("http://localhost:5000/createvideo");
+  const timeLine = yield select(store => store.timeLine);
+  requestGet(`${timeLine.server}/createvideo`);
 }

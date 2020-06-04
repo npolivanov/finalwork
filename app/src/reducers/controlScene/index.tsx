@@ -11,6 +11,7 @@ export const appActions = {
 const initialState = {
   draw: false,
   scale: 0.8, // scale main scene
+ 
 };
 
 function controlScene(state = initialState, { type, payload }: any) {
