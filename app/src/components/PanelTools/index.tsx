@@ -8,6 +8,7 @@ import BrushOutlinedIcon from "@material-ui/icons/BrushOutlined";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import PermDataSettingIcon from "@material-ui/icons/PermDataSetting";
 import FormatColorFillIcon from "@material-ui/icons/FormatColorFill";
+import ImageIcon from "@material-ui/icons/Image";
 
 const Wrapper = styled.div`
   width: 5%;

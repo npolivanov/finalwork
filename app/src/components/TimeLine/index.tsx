@@ -12,7 +12,7 @@ var settings = {
   infinite: false,
   speed: 500,
   slidesToShow: 10,
-  slidesToScroll: 1,
+  slidesToScroll: 5,
 };
 
 const TimeLineStyled = styled.div`
@@ -51,6 +51,9 @@ function TimeLine(props: any) {
         <Button variant="contained" color="primary" onClick={props.createVideo}>
           Done video
         </Button>
+        <Button variant="contained" color="primary" onClick={props.deleteVideo}>
+          Delete all
+        </Button>
         <TextField
           id="outlined-basic"
           value={props.server}
@@ -63,7 +66,7 @@ function TimeLine(props: any) {
         {props.shots.map((shot: string, i: number) => (
           <Shot key={i}>
             <img width={"150px"} src={shot} />
-            <p>1/24</p>
+            <p>1/24 - кадр в секунду</p>
           </Shot>
         ))}
       </Slider>
@@ -82,6 +85,7 @@ const action = {
   clickDoneShot: appActions.clickDoneShot,
   createVideo: appActions.createVideo,
   setServer: appActions.setServer,
+  deleteVideo: appActions.deleteVideo,
 };
 
 export default connect(mapStateToProps, action)(TimeLine);

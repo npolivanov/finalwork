@@ -23,3 +23,9 @@ export function* createVideo() {
   const timeLine = yield select(store => store.timeLine);
   requestGet(`${timeLine.server}/createvideo`);
 }
+
+export function* deleteVideo() {
+  const timeLine = yield select(store => store.timeLine);
+
+  requestGet(`${timeLine.server}/delete`);
+}

@@ -107,6 +107,7 @@ function Scene(props: IProps) {
             height={800}
           >
             <Layer>
+              <Rect width={1200} height={800} fill="white" />
               {props.figures.map((item: any, i: number) => {
                 switch (item.type) {
                   case "Line":
