@@ -8,6 +8,7 @@ import BrushOutlinedIcon from "@material-ui/icons/BrushOutlined";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import PermDataSettingIcon from "@material-ui/icons/PermDataSetting";
 import FormatColorFillIcon from "@material-ui/icons/FormatColorFill";
+import AudiotrackIcon from "@material-ui/icons/Audiotrack";
 import ImageIcon from "@material-ui/icons/Image";
 
 const Wrapper = styled.div`
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
   height: 70vh;
   position: fixed;
   z-index: 999;
-  background-color: #262c34;
+  background-color: #dddddd;
 `;
 
 const Container = styled.div`
@@ -23,6 +24,12 @@ const Container = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
   flex-direction: column;
+`;
+
+const Input = styled.input`
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
 `;
 
 function returnTool(props: any) {
@@ -66,6 +73,25 @@ function returnTool(props: any) {
 }
 
 function PanelTools(props: any) {
+  const imageInput = React.useRef<any>(null);
+  const textInput = React.useRef(null);
+
+  const changeImage = (e: any) => {
+    if (imageInput !== null) {
+      console.log(imageInput.current.files[0]);
+      var reader = new FileReader();
+      reader.readAsDataURL(imageInput.current.files[0]);
+      console.log(reader);
+
+      reader.onload = (event: any) => {
+        props.setImage({
+          value: event.target.result,
+          type: "IMAGE",
+        });
+      };
+    }
+  };
+
   return (
     <Wrapper>
       <Container>
@@ -74,12 +100,57 @@ function PanelTools(props: any) {
             color="primary"
             aria-label="upload picture"
             component="span"
+            style={{ height: "25px", width: "25px", margin: "auto" }}
             onClick={() => props.selectTools(item.type)}
             key={i}
           >
             {returnTool({ type: item.type, selected: item.selected })}
           </IconButton>
         ))}
+
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          style={{
+            height: "25px",
+            width: "25px",
+            margin: "auto",
+            position: "relative",
+            cursor: "pointer",
+          }}
+
+          // onClick={() => textInput !== null && textInput.current}
+          // key={i}
+        >
+          <Input
+            type="file"
+            onChange={(e: any) => changeImage(e)}
+            name="image"
+            multiple
+            accept="*"
+            ref={imageInput}
+          />
+          <ImageIcon />
+        </IconButton>
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          style={{
+            height: "25px",
+            width: "25px",
+            margin: "auto",
+            position: "relative",
+            cursor: "pointer",
+          }}
+
+          // onClick={() => textInput !== null && textInput.current}
+          // key={i}
+        >
+          <Input type="file" name="audio" multiple accept="*" ref={textInput} />
+          <AudiotrackIcon />
+        </IconButton>
       </Container>
     </Wrapper>
   );
@@ -93,6 +164,7 @@ const mapStateToProps = (state: any) => {
 
 const action = {
   selectTools: appActions.selectTools,
+  setImage: appActions.setImage,
 };
 
 export default connect(mapStateToProps, action)(PanelTools);

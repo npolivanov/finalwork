@@ -17,6 +17,7 @@ export const actionTypes = {
   SET_BACKGROUND_COLOR: "SET_BACKGROUND_COLOR",
   SET_SELECTED_FIGURE: "SET_SELECTED_FIGURE",
   SET_FIGURE_DRAW: "SET_FIGURE_DRAW",
+  SET_IMAGE: "SET_IMAGE",
 };
 
 export const appActions = {
@@ -79,6 +80,10 @@ export const appActions = {
     type: actionTypes.SET_FIGURE_DRAW,
     payload: payload,
   }),
+  setImage: (payload: any) => ({
+    type: actionTypes.SET_IMAGE,
+    payload: payload,
+  }),
 };
 
 const initialState = {
@@ -125,6 +130,7 @@ const initialState = {
   fontStyle: "normal",
   arrayFontStyle: ["normal", "bold", "italic"],
   arrayAlign: ["left", "center", "right"],
+  imageArray: [],
 };
 
 function panelTools(state = initialState, { type, payload }: any) {
@@ -227,7 +233,8 @@ function panelTools(state = initialState, { type, payload }: any) {
       return { ...state, valueText: payload };
     case actionTypes.SET_STYLE:
       return { ...state, fontStyle: payload };
-
+    case actionTypes.SET_IMAGE:
+      return { ...state, figures: [...state.figures, payload] };
     default:
       return state;
   }

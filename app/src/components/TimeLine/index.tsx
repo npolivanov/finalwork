@@ -7,7 +7,9 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import WaveFormComponents from "./componenst/WaveForm";
 var settings = {
+  arrows: true,
   dots: false,
   infinite: false,
   speed: 500,
@@ -20,7 +22,7 @@ const TimeLineStyled = styled.div`
   z-index: 9999;
   width: 100%;
   height: 25vh;
-  background-color: #262c34;
+  background-color: #dddddd;
 `;
 
 const Settings = styled.div`
@@ -30,10 +32,18 @@ const Settings = styled.div`
   justify-content: center;
 `;
 
+const TextShot = styled.p`
+  font-size: 8px;
+`;
+
 const Shot = styled.div`
+  max-width: 100px;
   p {
     margin-top: -20px;
     margin: auto;
+  }
+  img {
+    width: 100px;
   }
 `;
 
@@ -54,22 +64,17 @@ function TimeLine(props: any) {
         <Button variant="contained" color="primary" onClick={props.deleteVideo}>
           Delete all
         </Button>
-        <TextField
-          id="outlined-basic"
-          value={props.server}
-          label="server"
-          variant="filled"
-          onChange={e => props.setServer(e.target.value)}
-        />
+        {/* <TextField id="outlined-basic" /> */}
       </Settings>
       <Slider {...settings}>
         {props.shots.map((shot: string, i: number) => (
           <Shot key={i}>
-            <img width={"150px"} src={shot} />
-            <p>1/24 - кадр в секунду</p>
+            <img src={shot} />
+            <TextShot>1/24 - кадр в секунду</TextShot>
           </Shot>
         ))}
       </Slider>
+      <WaveFormComponents />
     </TimeLineStyled>
   );
 }

@@ -10765,6 +10765,13 @@ watchpack@^1.6.0:
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
 
+waveform-react@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/waveform-react/-/waveform-react-0.2.3.tgz#65d13c3b7a8711bddb94a7e014c516fec9bce587"
+  integrity sha512-7Ieo+fYpZJe6p+B5f0xkOeZ8tL469vkWvyvr7L9Y9+uuREyxHSMO53sStIaWSe5Dfv4xo2cxKDVLhQX7TGj8og==
+  dependencies:
+    prop-types "^15.5.10"
+
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/wbuf/-/wbuf-1.7.3.tgz#c1d8d149316d3ea852848895cb6a0bfe887b87df"

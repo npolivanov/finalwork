@@ -60,7 +60,7 @@ const Wrapper = styled.div`
   padding: 10px;
   box-sizing: border-box;
   display: flex;
-  background-color: #262c34;
+  background-color: #dddddd;
   z-index: 9999;
   position: relative;
 `;
