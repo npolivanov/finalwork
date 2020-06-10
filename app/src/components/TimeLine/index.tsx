@@ -47,6 +47,10 @@ const Shot = styled.div`
   }
 `;
 
+const Audio = styled.audio`
+  width: 100%;
+`;
+
 function TimeLine(props: any) {
   return (
     <TimeLineStyled>
@@ -74,7 +78,11 @@ function TimeLine(props: any) {
           </Shot>
         ))}
       </Slider>
-      <WaveFormComponents />
+      {props.song && (
+        <Audio controls>
+          <source src={props.song} type="audio/mpeg" />
+        </Audio>
+      )}
     </TimeLineStyled>
   );
 }
@@ -83,6 +91,7 @@ const mapStateToProps = (state: any) => {
   return {
     server: state.timeLine.server,
     shots: state.timeLine.shots,
+    song: state.panelTools.song,
   };
 };
 

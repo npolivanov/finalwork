@@ -16,7 +16,6 @@ import {
 import Konva from "konva";
 import TextComponents from "./components/Text";
 import LineComponents from "./components/Line";
-import useImage from "use-image";
 
 interface IFont {
   id: number;
@@ -35,10 +34,14 @@ interface IProps {
   setEraser(): void;
   setText(obj: any): void;
   setFigureDraw(obj: any): void;
+  setBackgroundColorFill(): void;
+  returnPoints(): number[];
   figures: Array<any>;
   arrayFontSize: Array<IFont>;
   currentFontSize: number;
   currentAlign: string;
+  backgroundColorScene: string;
+  selectedFigure: string;
 }
 
 const Wrapper = styled.div`
@@ -58,9 +61,6 @@ const Card = styled.div`
 
 function Scene(props: IProps) {
   const [drawScene, setDrawScene] = useState(true);
-  const [image] = useImage(
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALcAAAC3CAYAAABQbs+fAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAAuaVRYdENyZWF0aW9uIFRpbWUAAAAAANCS0YIgMDIg0LjRjtC9IDIwMjAgMjE6MTU6MjTbegpOAAAC1klEQVR4nO3YsU0jQRSA4RlMACJBdEAHDuiLWuiLIqiAiNBiLrjUe8md16ef75M2eskb729ptHOttQYE3Vx7AbgUcZMlbrLETdfacDwe1xgj+9zf3199B2f8++d4PG4lvObW15I553h7P50bJby+3KbPN8bPOePWBz/XErLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZusudZa5waHw2F8f3/vvc9u5rwZa3XPN8YYc86x8XozDofDOJ1OZ2ebcc85L7rU/+Dt/fyPUvH6cnvtFXax9Qd2LSFL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJEjdZ4iZL3GSJmyxxkyVussRNlrjJmmutdW7w/Pw8Pj4+dl6Hf+np6Wl8fn5ee42Lenh4GF9fX2dnm3HPOcfGKGHOee0VdlF+h2P8uVPXErLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xkiZsscZMlbrLETZa4yRI3WeImS9xk3W4NHh8fx5xzz112Necca61rr3FRd3d36Xc4xu9Ot8xVf8P8WK4lZImbLHGTJW6yxE2WuMn6Bb2TLFRXI9YpAAAAAElFTkSuQmCC",
-  );
 
   const draw = (e: any) => {
     const canvas: any = document.getElementById("mainCanvas");
@@ -93,6 +93,9 @@ function Scene(props: IProps) {
       case "figure":
         props.setFigureDraw({ x: e.evt.offsetX, y: e.evt.offsetY });
         break;
+      case "fill":
+        props.setBackgroundColorFill();
+        break;
     }
   };
 
@@ -106,6 +109,14 @@ function Scene(props: IProps) {
     (document as any).body.style.cursor = `default`;
   };
 
+  const returnPoints = () => {
+    if (props.selectedFigure === "triangle") {
+      return [0, 0, 100, 0, 100, 100, 0, 0];
+    } else if (props.selectedFigure === "square") {
+      return [0, 0, 0, 100, 100, 100, 100, 0];
+    }
+    return [0, 0, 0, 100, 100, 100, 100, 0];
+  };
   return (
     <Wrapper>
       <Card style={{ transform: `scale(${props.scale})` }}>
@@ -118,7 +129,11 @@ function Scene(props: IProps) {
             height={800}
           >
             <Layer>
-              <Rect width={1200} height={800} fill="white" />
+              <Rect
+                width={1200}
+                height={800}
+                fill={props.backgroundColorScene}
+              />
               {props.figures.map((item: any, i: number) => {
                 switch (item.type) {
                   case "Line":
@@ -154,20 +169,20 @@ function Scene(props: IProps) {
                         strokeWidth={item.lineWidth}
                       />
                     );
-                  // case "TRIANGLE":
-                  //   return (
-                  //     <LineComponents
-                  //       key={i}
-                  //       x={item.x}
-                  //       y={item.y}
-                  //       edit={drawScene}
-                  //       points={[0, 0, 100, 0, 100, 100]}
-                  //       backgroundColor={item.backgroundColor}
-                  //       stroke={item.color}
-                  //       strokeWidth={item.lineWidth}
-                  //       setDrawScene={() => setDrawScene(false)}
-                  //     />
-                  //   );
+                  case "TRIANGLE":
+                    return (
+                      <Line
+                        key={i}
+                        x={item.x}
+                        draggable={true}
+                        y={item.y}
+                        edit={drawScene}
+                        points={item.array}
+                        backgroundColor={item.backgroundColor}
+                        stroke={item.color}
+                        strokeWidth={item.lineWidth}
+                      />
+                    );
                   case "TEXT":
                     return (
                       <TextComponents
@@ -215,6 +230,8 @@ const mapStateToProps = (state: any) => {
     currentFontSize: state.panelTools.currentFontSize,
     arrayFontSize: state.panelTools.arrayFontSize,
     currentAlign: state.panelTools.currentAlign,
+    backgroundColorScene: state.panelTools.backgroundColorScene,
+    selectedFigure: state.panelTools.selectedFigure,
   };
 };
 
@@ -226,6 +243,7 @@ const action = {
   setEraser: actionPanel.setEraser,
   setText: actionPanel.setText,
   setFigureDraw: actionPanel.setFigureDraw,
+  setBackgroundColorFill: actionPanel.setBackgroundColorFill,
 };
 
 export default connect(mapStateToProps, action)(Scene);

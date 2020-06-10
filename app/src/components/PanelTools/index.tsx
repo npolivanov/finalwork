@@ -10,6 +10,7 @@ import PermDataSettingIcon from "@material-ui/icons/PermDataSetting";
 import FormatColorFillIcon from "@material-ui/icons/FormatColorFill";
 import AudiotrackIcon from "@material-ui/icons/Audiotrack";
 import ImageIcon from "@material-ui/icons/Image";
+import PanToolIcon from "@material-ui/icons/PanTool";
 
 const Wrapper = styled.div`
   width: 5%;
@@ -69,25 +70,42 @@ function returnTool(props: any) {
           style={{ color: props.selected ? "#0db20a" : "grey" }}
         />
       );
+    case "handle":
+      return (
+        <PanToolIcon
+          fontSize="small"
+          style={{ color: props.selected ? "#0db20a" : "grey" }}
+        />
+      );
   }
 }
 
 function PanelTools(props: any) {
   const imageInput = React.useRef<any>(null);
-  const textInput = React.useRef(null);
+  const audioInput = React.useRef<any>(null);
 
   const changeImage = (e: any) => {
     if (imageInput !== null) {
-      console.log(imageInput.current.files[0]);
       var reader = new FileReader();
       reader.readAsDataURL(imageInput.current.files[0]);
-      console.log(reader);
 
       reader.onload = (event: any) => {
         props.setImage({
           value: event.target.result,
           type: "IMAGE",
         });
+      };
+    }
+  };
+
+  const changeAudio = (e: any) => {
+    if (audioInput !== null) {
+      var reader = new FileReader();
+      reader.readAsDataURL(audioInput.current.files[0]);
+
+      reader.onload = (event: any) => {
+        console.log(event.target.result);
+        props.setSong(event.target.result);
       };
     }
   };
@@ -128,7 +146,7 @@ function PanelTools(props: any) {
             onChange={(e: any) => changeImage(e)}
             name="image"
             multiple
-            accept="*"
+            accept="image/png"
             ref={imageInput}
           />
           <ImageIcon />
@@ -148,7 +166,14 @@ function PanelTools(props: any) {
           // onClick={() => textInput !== null && textInput.current}
           // key={i}
         >
-          <Input type="file" name="audio" multiple accept="*" ref={textInput} />
+          <Input
+            type="file"
+            onChange={(e: any) => changeAudio(e)}
+            name="audio"
+            multiple
+            accept=".mp3,audio/"
+            ref={audioInput}
+          />
           <AudiotrackIcon />
         </IconButton>
       </Container>
@@ -165,6 +190,7 @@ const mapStateToProps = (state: any) => {
 const action = {
   selectTools: appActions.selectTools,
   setImage: appActions.setImage,
+  setSong: appActions.setSong,
 };
 
 export default connect(mapStateToProps, action)(PanelTools);
