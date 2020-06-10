@@ -21,7 +21,9 @@ export function* setScreenShot() {
 }
 export function* createVideo() {
   const timeLine = yield select(store => store.timeLine);
-  requestGet(`${timeLine.server}/createvideo`);
+  requestGet(`${timeLine.server}/createvideo`).then(() => {
+    window.open(`${timeLine.server}/createvideo`);
+  });
 }
 
 export function* deleteVideo() {

@@ -54,6 +54,7 @@ const Audio = styled.audio`
 function TimeLine(props: any) {
   return (
     <TimeLineStyled>
+      {props.video && <video controls src={props.video}></video>}
       <Settings>
         <Button
           variant="contained"
@@ -92,6 +93,7 @@ const mapStateToProps = (state: any) => {
     server: state.timeLine.server,
     shots: state.timeLine.shots,
     song: state.panelTools.song,
+    video: state.panelTools.video,
   };
 };
 

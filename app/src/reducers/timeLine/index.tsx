@@ -31,7 +31,9 @@ const initialState = {
   shots: localStorage.getItem("shots")
     ? JSON.parse(localStorage.getItem("shots") || "[]")
     : [],
-  server: localStorage.getItem("server") ? localStorage.getItem("server") : "",
+  server: localStorage.getItem("server")
+    ? localStorage.getItem("server")
+    : "http://localhost:8080",
 };
 
 function TimeLine(state = initialState, { type, payload }: any) {

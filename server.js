@@ -4,7 +4,11 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const ImageHandler = require("./handlerServer/saveToShot");
+const router = require("express").Router();
 const fs = require("fs");
+
+resolve = require("path").resolve;
+
 // const page = require("./app/build/index.html");
 const app = express();
 const port = 8080;
@@ -42,9 +46,18 @@ function startServer() {
     response.send();
   });
 
-  app.get("/createvideo", (request, response) => {
-    handlerImage.createVideo();
-    response.send();
+  app.get("/createvideo", async (request, response) => {
+    await handlerImage.createVideo();
+    response.setHeader("Content-Type", "video/mp4");
+    // response.sendFile(resolve(`short/output.mp4`), err => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     console.log("success");
+    //   }
+    // });
+    var rs = fs.createReadStream(`short/output.mp4`);
+    rs.pipe(response);
   });
 }
 

@@ -21,6 +21,7 @@ export const actionTypes = {
   SET_IMAGE: "SET_IMAGE",
   SET_SONG: "SET_SONG",
   SET_BACKGROUND_COLOR_FILL: "SET_BACKGROUND_COLOR_FILL",
+  SET_VIDEO: "SET_VIDEO",
 };
 
 export const appActions = {
@@ -95,6 +96,10 @@ export const appActions = {
     type: actionTypes.SET_BACKGROUND_COLOR_FILL,
     payload: payload,
   }),
+  setVideo: (payload: any) => ({
+    type: actionTypes.SET_VIDEO,
+    payload: payload,
+  }),
 };
 
 const initialState = {
@@ -148,6 +153,7 @@ const initialState = {
   arrayFontStyle: ["normal", "bold", "italic"],
   arrayAlign: ["left", "center", "right"],
   imageArray: [],
+  video: "",
 };
 
 function panelTools(state = initialState, { type, payload }: any) {
@@ -270,6 +276,8 @@ function panelTools(state = initialState, { type, payload }: any) {
       return { ...state, song: payload };
     case actionTypes.SET_BACKGROUND_COLOR_FILL:
       return { ...state, backgroundColorScene: state.color };
+    case actionTypes.SET_VIDEO:
+      return { ...state, video: payload };
     default:
       return state;
   }

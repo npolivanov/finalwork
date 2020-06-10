@@ -52,15 +52,22 @@ class ImageHandler {
   }
 
   createVideo() {
-    const args = ["-y", "-i", "./short/%d.png", "./short/output.mp4"];
-    const ffmpeg = spawn("ffmpeg", args);
+    return new Promise((resolve, reject) => {
+      const args = ["-y", "-i", "./short/%d.png", "./short/output.mp4"];
+      const ffmpeg = spawn("ffmpeg", args);
 
-    ffmpeg.stdout.on("data", data => {
-      console.log(`stdout: ${data}`);
-    });
+      ffmpeg.stdout.on("data", data => {
+        // console.log(`stdout: ${data}`);
+      });
 
-    ffmpeg.stderr.on("data", data => {
-      console.error(`stderr: ${data}`);
+      ffmpeg.stderr.on("data", data => {
+        console.log(data);
+        //  resolve();
+        // console.error(`stderr: ${data}`);
+      });
+      ffmpeg.on("close", code => {
+        resolve();
+      });
     });
   }
 }
