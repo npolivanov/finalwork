@@ -1,8 +1,21 @@
 import axios from "axios";
 
-export default (url: string, data: any) => {
+export default (url: string, data: any, object?: any) => {
+  let currentObject;
+  if (object) {
+    currentObject = {
+      data: data,
+      ...object,
+    };
+  } else {
+    currentObject = {
+      data: data,
+    };
+  }
+  console.log("currentObject");
+  console.log(currentObject);
   return axios
-    .post(url, { data: data })
+    .post(url, currentObject)
     .then(res => {
       if (res.status !== 200) {
         throw new Error();

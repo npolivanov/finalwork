@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 const ImageHandler = require("./handlerServer/saveToShot");
 const router = require("express").Router();
 const fs = require("fs");
+const { runInNewContext } = require("vm");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const formidable = require("formidable");
 
 resolve = require("path").resolve;
 
@@ -16,6 +20,8 @@ function startServer() {
   let handlerImage = new ImageHandler();
   app.use("/static", express.static("static"));
   app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -58,6 +64,10 @@ function startServer() {
     // });
     var rs = fs.createReadStream(`short/output.mp4`);
     rs.pipe(response);
+  });
+
+  app.post("/audio", (request, response) => {
+    console.log(request.query);
   });
 }
 

@@ -31,3 +31,17 @@ export function* deleteVideo() {
 
   requestGet(`${timeLine.server}/delete`);
 }
+
+export function* setSong({ payload }: any) {
+  const timeLine = yield select(store => store.timeLine);
+
+  let formdata = new FormData();
+
+  formdata.append("audio", payload);
+
+  request(`${timeLine.server}/audio`, formdata, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
